@@ -26,7 +26,11 @@ session_start();
                         <a class="nav-link" href="pages/posts.php">Artikel</a>
                     </li>
                 </ul>
-                <ul class="navbar-nav ms-auto">
+                <form class="d-flex ms-auto" action="pages/search.php" method="GET">
+                    <input class="form-control me-2" type="search" name="q" placeholder="Cari artikel...">
+                    <button class="btn btn-outline-light" type="submit">Cari</button>
+                </form>
+                <ul class="navbar-nav ms-2">
                     <?php if(isset($_SESSION['user_id'])): ?>
                         <li class="nav-item">
                             <a class="nav-link" href="admin/dashboard.php">Dashboard</a>
@@ -48,7 +52,7 @@ session_start();
         <div class="row">
             <div class="col-md-8">
                 <?php
-                $query = "SELECT * FROM posts ORDER BY created_at DESC LIMIT 5";
+                $query = "SELECT * FROM posts WHERE status = 'published' ORDER BY created_at DESC LIMIT 5";
                 $result = mysqli_query($conn, $query);
                 
                 if(mysqli_num_rows($result) > 0) {
@@ -67,12 +71,31 @@ session_start();
                 ?>
             </div>
             <div class="col-md-4">
-                <div class="card">
+                <div class="card mb-4">
                     <div class="card-header">
                         Tentang CMS
                     </div>
                     <div class="card-body">
                         <p>Selamat datang di CMS Sederhana. Ini adalah sistem manajemen konten yang memungkinkan Anda untuk membuat dan mengelola konten website dengan mudah.</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        Artikel Terbaru
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <?php
+                            $query = "SELECT id, title FROM posts WHERE status = 'published' ORDER BY created_at DESC LIMIT 5";
+                            $result = mysqli_query($conn, $query);
+                            while($row = mysqli_fetch_assoc($result)) {
+                                echo '<li class="mb-2">';
+                                echo '<a href="pages/post.php?id=' . $row['id'] . '">' . htmlspecialchars($row['title']) . '</a>';
+                                echo '</li>';
+                            }
+                            ?>
+                        </ul>
                     </div>
                 </div>
             </div>
