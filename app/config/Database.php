@@ -3,7 +3,7 @@ class Database {
     private $host = "localhost";
     private $user = "root";
     private $pass = "";
-    private $dbname = "cms_sederhana";
+    private $dbname = "cms_sederhana_mvc";
     private $conn;
 
     public function connect() {

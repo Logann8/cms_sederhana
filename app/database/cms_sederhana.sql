@@ -1,3 +1,10 @@
+-- Buat database jika belum ada
+CREATE DATABASE IF NOT EXISTS cms_sederhana_mvc
+CHARACTER SET utf8mb4
+COLLATE utf8mb4_general_ci;
+
+USE cms_sederhana_mvc;
+
 -- Buat tabel users
 CREATE TABLE users (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -7,7 +14,7 @@ CREATE TABLE users (
     role ENUM('admin', 'editor', 'author') DEFAULT 'author',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Buat tabel categories
 CREATE TABLE categories (
@@ -17,7 +24,7 @@ CREATE TABLE categories (
     description TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Buat tabel posts
 CREATE TABLE posts (
@@ -34,7 +41,7 @@ CREATE TABLE posts (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (author_id) REFERENCES users(id) ON DELETE SET NULL,
     FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Buat tabel comments
 CREATE TABLE comments (
@@ -46,7 +53,7 @@ CREATE TABLE comments (
     status ENUM('pending', 'approved', 'spam') DEFAULT 'pending',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Insert default admin user (password: admin123)
 INSERT INTO users (username, password, email, role) 
