@@ -11,7 +11,7 @@ $query = "SELECT p.*, c.name as category_name
 $result = mysqli_query($conn, $query);
 ?>
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" data-bs-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,55 +21,130 @@ $result = mysqli_query($conn, $query);
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --hero-gradient-start: #4b6cb7;
+            --hero-gradient-end: #182848;
+            --card-bg: #ffffff;
+            --text-color: #212529;
+            --card-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        [data-bs-theme="dark"] {
+            --hero-gradient-start: #2c3e50;
+            --hero-gradient-end: #1a1a1a;
+            --card-bg: #2d2d2d;
+            --text-color: #ffffff;
+            --card-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        body {
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+
         .hero-section {
-            background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+            background: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
             color: white;
             padding: 100px 0;
             margin-bottom: 50px;
         }
+
         .feature-card {
             border: none;
             border-radius: 15px;
             transition: transform 0.3s;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: var(--card-shadow);
+            background-color: var(--card-bg);
         }
+
         .feature-card:hover {
             transform: translateY(-5px);
         }
+
         .feature-icon {
             font-size: 2.5rem;
             margin-bottom: 1rem;
-            color: #4b6cb7;
+            color: var(--hero-gradient-start);
         }
+
         .article-card {
             border: none;
             border-radius: 15px;
             transition: transform 0.3s;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: var(--card-shadow);
             height: 100%;
+            background-color: var(--card-bg);
         }
+
         .article-card:hover {
             transform: translateY(-5px);
         }
+
         .article-image {
             height: 200px;
             object-fit: cover;
             border-radius: 15px 15px 0 0;
         }
+
         .footer {
-            background: #182848;
+            background: var(--hero-gradient-end);
             color: white;
             padding: 50px 0;
             margin-top: 50px;
         }
+
         .social-icon {
             font-size: 1.5rem;
             margin: 0 10px;
             color: white;
             transition: color 0.3s;
         }
+
         .social-icon:hover {
-            color: #4b6cb7;
+            color: var(--hero-gradient-start);
+        }
+
+        .theme-toggle {
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Back to Top Button Styles */
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--hero-gradient-start);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: var(--hero-gradient-end);
+            color: white;
+            transform: translateY(-3px);
         }
     </style>
 </head>
@@ -95,7 +170,10 @@ $result = mysqli_query($conn, $query);
                         <a class="nav-link" href="#fitur">Fitur</a>
                     </li>
                 </ul>
-                <div class="d-flex">
+                <div class="d-flex align-items-center">
+                    <button class="theme-toggle btn btn-link text-light me-3" id="themeToggle">
+                        <i class="fas fa-sun"></i>
+                    </button>
                     <a href="admin/login.php" class="btn btn-outline-light me-2">
                         <i class="fas fa-sign-in-alt"></i> Login
                     </a>
@@ -244,7 +322,55 @@ $result = mysqli_query($conn, $query);
         </div>
     </footer>
 
+    <!-- Back to Top Button -->
+    <a href="#" class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        const icon = themeToggle.querySelector('i');
+
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-bs-theme', savedTheme);
+        updateIcon(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-bs-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            html.setAttribute('data-bs-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateIcon(newTheme);
+        });
+
+        function updateIcon(theme) {
+            icon.className = theme === 'light' ? 'fas fa-sun' : 'fas fa-moon';
+        }
+
+        // Back to Top Button Functionality
+        const backToTopButton = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('show');
+            } else {
+                backToTopButton.classList.remove('show');
+            }
+        });
+
+        backToTopButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
 </body>
 </html> 
