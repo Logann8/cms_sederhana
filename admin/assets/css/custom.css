@@ -1,0 +1,84 @@
+/* Dark Mode Styles */
+[data-bs-theme="dark"] {
+    --dark-bg: #1a1a1a;
+    --dark-card: #2d2d2d;
+    --dark-text: #ffffff;
+}
+
+[data-bs-theme="dark"] body {
+    background-color: var(--dark-bg);
+    color: var(--dark-text);
+}
+
+[data-bs-theme="dark"] .card {
+    background-color: var(--dark-card);
+    border-color: #404040;
+}
+
+[data-bs-theme="dark"] .table {
+    color: var(--dark-text);
+}
+
+[data-bs-theme="dark"] .navbar-light {
+    background-color: var(--dark-card) !important;
+    border-color: #404040;
+}
+
+[data-bs-theme="dark"] .navbar-light .navbar-nav .nav-link {
+    color: var(--dark-text);
+}
+
+[data-bs-theme="dark"] .main-sidebar {
+    background-color: var(--dark-card) !important;
+}
+
+[data-bs-theme="dark"] .content-wrapper {
+    background-color: var(--dark-bg) !important;
+}
+
+/* Back to Top Button */
+.back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #007bff;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.back-to-top.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.back-to-top:hover {
+    background: #0056b3;
+    color: white;
+    transform: translateY(-3px);
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    background: transparent;
+    border: none;
+    color: inherit;
+}
+
+.theme-toggle:hover {
+    background-color: rgba(0,0,0,0.1);
+} 
